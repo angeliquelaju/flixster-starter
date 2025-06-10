@@ -2,6 +2,7 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
+  
 }
 
 button {
@@ -9,8 +10,9 @@ button {
   color: white;
   cursor: pointer;
   font-size: 16px;
-  font-weight: bold;
+  border: none;
   transition: background-color 0.3s ease;
+  margin-right: 2px;
 }
 
 button:hover {

@@ -1,28 +1,155 @@
-.App {
+header {
+  background-color: #4e6e98; 
+  padding: 5px 0px 1px 0px;
+  text-align: center;
+  color: #ffffff; 
+}
+
+footer {
+  background-color: pink;
+}
+
+.movie-list {
+  display: flex;
+  flex-wrap: wrap;  
+  justify-content: center; 
+  gap: 16px;
+  padding: 16px;
+}
+
+.movie-card {
+  width: 200px;           
+  padding: 8px; 
+  background: transparent;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.movie-card:hover{
+  transform: translateY(-5px);
+  background-color: #aaadb5;
+  border: 10px;
+}
+
+.movie-card img {
+  width: 100%;            
+  height: auto;          
+  border-radius: 8px;
+  margin-bottom: 8px; 
+  object-fit: contain;
+}
+
+.rating {
+  margin-top: 5px;
+  margin-bottom: 0px;
+  font-size: 13px;
+}
+
+.movie-title {
+  font-size: 16px;
+  margin: 0px;
   text-align: center;
 }
 
-.App-header {
-  background-color: #282c34;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-evenly;
-  color: white;
-  padding: 20px;
+#headerTitle {
+  text-align: center;
 }
 
-@media (max-width: 600px) {
-  .movie-card {
-    width: 100%;
-  }
+.searchNSort {
+  background-color: #4e6e98;
+  padding-bottom: 30px;
+}
 
-  .search-bar {
-    flex-direction: column;
-    gap: 10px;
-  }
+.searchBar {
+  margin-left: 20px;
+  margin-right: 2px;
+  height: 19px;
+  width: 300px;
+  border-radius: 5px;
+  border:1000px #282c34;
+  padding: 8px 8px;
+}
 
-  .search-bar form {
-    flex-direction: column;
-  }
+.searchButton, .clearButton{
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.loadButton {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 2px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  max-width: 800px;
+  width: 90%;
+  border-radius: 8px;
+  position: relative;
+  overflow-y: auto;
+  max-height: 500px;
+  display: flex;             
+  gap: 20px;               
+  align-items: flex-start;   
+}
+
+.close-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: black;
+}
+
+.close-button:hover{
+  background-color: white;
+  color: black;
+}
+
+.modal-details h2 {
+  margin-bottom: 10px;
+}
+
+.modal-overview {
+  margin-top: 10px;
+}
+
+.modalMoviePicture {
+  max-width: 30%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.sortDrop {
+  margin-left: 10px;
+  padding: 10px;
+  font-size: 14px;
+  border-radius:5px;
+  width: 200px;
+}
+
+.playingButton {
+  padding: 10px;
+  border-radius: 5px;
 }
