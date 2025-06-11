@@ -10,9 +10,10 @@ const MovieList = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [sortOption, setSortOption] = useState('');
+  const [favorites, setFavorites] = useState(new Set());
+  const [watched, setWatched] = useState(new Set());
 
   useEffect(() => {
     if (view === 'nowPlaying') {
@@ -29,23 +30,36 @@ const MovieList = () => {
   }, [searchQuery, view]);
 
   const handleMovieClick = async (movieId) => {
-    try {
-      const res = await fetch(
-        `https://api.themoviedb.org/3/movie/${movieId}?api_key=${import.meta.env.VITE_API_KEY}&language=en-US`
-      );
-      const data = await res.json();
-      setSelectedMovie(data);
-    } catch {
-      setError('Failed to fetch movie details.');
+    const res = await fetch(
+      `https://api.themoviedb.org/3/movie/${movieId}?api_key=98270f6957c4765c491b8888543df0e2&language=en-US`
+    );
+    const videosRes = await fetch(
+      `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=98270f6957c4765c491b8888543df0e2&language=en-US`
+    );
+
+    const data = await res.json();
+    const videosData = await videosRes.json();
+
+    const trailer = videosData.results.find(
+      (video) =>
+        video.site === "YouTube" && (video.type === "Trailer") && video.official === true
+    );
+    
+    let trailerKey = null;
+    if (trailer) {
+      trailerKey = trailer.key;
     }
+
+    const movieWithTrailer = {...data, trailerKey: trailerKey};
+    setSelectedMovie(movieWithTrailer);
+    console.log(videosData.results);
   };
 
   const fetchNowPlaying = async (pageNum) => {
     setLoading(true);
     try {
       const res = await fetch(
-        `https://api.themoviedb.org/3/movie/now_playing?api_key=${import.meta.env.VITE_API_KEY}&language=en-US&page=${pageNum}`
-      );
+        `https://api.themoviedb.org/3/movie/now_playing?api_key=98270f6957c4765c491b8888543df0e2&language=en-US&page=${pageNum}`);
       const data = await res.json();
 
       if (data.results.length === 0) {
@@ -58,8 +72,8 @@ const MovieList = () => {
           return [...prev, ...newMovies];
         });
       }
-    } catch {
-      setError('Failed to load movies.');
+    } catch (error) {
+      console.error('Failed to load movies:', error);
     } finally {
       setLoading(false);
     }
@@ -67,15 +81,14 @@ const MovieList = () => {
 
   const searchMovies = async () => {
     setLoading(true);
-    setError(null);
     try {
       const res = await fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=${import.meta.env.VITE_API_KEY}&language=en-US&query=${encodeURIComponent(searchQuery)}&page=1`
+        `https://api.themoviedb.org/3/search/movie?api_key=98270f6957c4765c491b8888543df0e2&language=en-US&query=${encodeURIComponent(searchQuery)}&page=1`
       );
       const data = await res.json();
       setSearchResults(data.results);
-    } catch {
-      setError('Failed to search movies.');
+    } catch (error) {
+      console.error('Failed to search movies:', error);
     } finally {
       setLoading(false);
     }
@@ -83,14 +96,12 @@ const MovieList = () => {
 
   const handleLoadMore = () => {
     if (view === 'nowPlaying' && hasMore) {
-      setPage(prev => prev + 1);
+      setPage(prev => prev + 1); 
     }
   };
 
   const handleViewChange = (newView) => {
     setView(newView);
-    setError(null);
-
     if (newView === 'nowPlaying') {
       setMovies([]);
       setPage(1);
@@ -120,6 +131,30 @@ const MovieList = () => {
     }
   };
 
+  const toggleFavorite = (movieId) => {
+    setFavorites(prev => {
+      const updated = new Set(prev);
+      if (updated.has(movieId)) {
+        updated.delete(movieId);
+      } else {
+        updated.add(movieId);
+      }
+      return updated;
+    });
+  };
+
+  const toggleWatched = (movieId) => {
+    setWatched(prev => {
+      const updated = new Set(prev);
+      if (updated.has(movieId)) {
+        updated.delete(movieId);
+      } else {
+        updated.add(movieId);
+      }
+      return updated;
+    });
+  };
+
   return (
     <main>
       <form className="searchNSort" onSubmit={(e) => {
@@ -128,25 +163,32 @@ const MovieList = () => {
           setView('search');
           searchMovies();
         }
-      }}
-      >
-        <button type = "button" className = "playingButton" onClick={() => handleViewChange('nowPlaying')} disabled={view === 'nowPlaying'}>Now Playing</button>
-        <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Search movies..." className = "searchBar"/>
-        <button type="submit" className="searchButton">Search</button>
+      }}>
+        <div className="left">
+          <button className = "playingButton" onClick={() => handleViewChange('nowPlaying')} disabled={view === 'nowPlaying'}>Now Playing</button>
+        </div>
 
-        <button type = "button" className = "clearButton" onClick={() => {
-          setSearchQuery('');   
-          setSearchResults([]);  
-          handleViewChange('nowPlaying'); 
-        }}>Clear
-        </button>
+        <div className="center">
+          <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Search movies..." className = "searchBar"/>
+          <button type="submit" className="searchButton">Search</button>
+       
 
-        <select value={sortOption} onChange={(e) => setSortOption(e.target.value)} className="sortDrop">
-          <option value="">Sort by...</option>
-          <option value="title">Title</option>
-          <option value="release_date">Release Date</option>
-          <option value="vote_average">Vote Average</option>
-        </select>
+          <button type = "button" className = "clearButton" onClick={() => {
+            setSearchQuery('');   
+            setSearchResults([]);  
+            handleViewChange('nowPlaying'); 
+          }}>Clear
+          </button>
+         </div>
+
+        <div className="right">
+          <select value={sortOption} onChange={(e) => setSortOption(e.target.value)} className="sortDrop">
+            <option value="">Sort by...</option>
+            <option value="title">Title</option>
+            <option value="release_date">Release Date</option>
+            <option value="vote_average">Vote Average</option>
+          </select>
+        </div>
       </form>
 
       <section className="movie-list">
@@ -157,13 +199,17 @@ const MovieList = () => {
             posterPath={movie.poster_path}
             voteAverage={movie.vote_average}
             onClick={() => handleMovieClick(movie.id)}
+            isFavorited={favorites.has(movie.id)}
+            toggleFavorite={() => toggleFavorite(movie.id)}
+            isWatched={watched.has(movie.id)}
+            toggleWatched={() => toggleWatched(movie.id)}
           />
         ))}
       </section>
       
-      <div className = "loadButton">
+      <div id = "load">
         {view === 'nowPlaying' && hasMore && !loading && (
-        <button onClick={handleLoadMore}>Load More</button>
+        <button className = "loadButton" onClick={handleLoadMore}>Load More</button>
         )}
       </div>
 

@@ -11,8 +11,8 @@ const App = () => {
         </header>
         <MovieList />
 
-        <footer className="app-footer">
-          <p>valerie laju</p>
+        <footer>
+          <p className = "footer">valerie laju</p>
         </footer>
       </div>
     </>

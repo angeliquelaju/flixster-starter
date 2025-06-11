@@ -10,16 +10,22 @@ const MovieModal = ({ movie, onClose }) => {
         <button className="close-button" onClick={onClose}>✖</button>
         <img
           className="modalMoviePicture"
-          src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+          src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
           alt={`${movie.title} backdrop`}
         />
         <div className="modal-details">
           <h2>{movie.title}</h2>
-          <p><strong>Release Date:</strong> {movie.release_date}</p>
-          <p><strong>Runtime:</strong> {movie.runtime} mins</p>
-          <p><strong>Genres:</strong> {movie.genres?.map(g => g.name).join(', ')}</p>
-          <p className="modal-overview">{movie.overview}</p>
+          <p className = "modal-release"><strong>Release Date:</strong> {movie.release_date}</p>
+          <p className = "modal-runtime"><strong>Runtime:</strong> {movie.runtime} mins</p>
+          <p className = "modal-genre"><strong>Genres:</strong> {movie.genres?.map(g => g.name).join(', ')}</p>
+          <p className = "modal-overview">{movie.overview}</p>
         </div>
+        {movie.trailerKey && (
+        <div className="trailer-container">
+          <h3 className = "trailer">Trailer</h3>
+          <iframe width="90%" height="400" src={`https://www.youtube.com/embed/${movie.trailerKey}`} title="YouTube trailer"></iframe>
+        </div>
+      )}
       </div>
     </div>
   );

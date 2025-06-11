@@ -9,6 +9,10 @@ footer {
   background-color: pink;
 }
 
+.footer p {
+  color: white;
+}
+
 .movie-list {
   display: flex;
   flex-wrap: wrap;  
@@ -39,13 +43,12 @@ footer {
   height: auto;          
   border-radius: 8px;
   margin-bottom: 8px; 
-  object-fit: contain;
 }
 
 .rating {
   margin-top: 5px;
   margin-bottom: 0px;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .movie-title {
@@ -61,13 +64,33 @@ footer {
 .searchNSort {
   background-color: #4e6e98;
   padding-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  gap: 20px; 
 }
+
+.left-section {
+  flex: 0 0 auto; 
+}
+
+.center-section {
+  flex: 1 1 auto; 
+  display: flex;
+  justify-content: center; 
+  gap: 10px; 
+}
+
+.right-section {
+  flex: 0 0 auto; 
+}
+
 
 .searchBar {
   margin-left: 20px;
   margin-right: 2px;
-  height: 19px;
-  width: 300px;
+  max-height: 19px;
+  max-width: 300px;
   border-radius: 5px;
   border:1000px #282c34;
   padding: 8px 8px;
@@ -78,10 +101,15 @@ footer {
   border-radius: 5px;
 }
 
-.loadButton {
+#load {
   text-align: center;
   margin-bottom: 20px;
   padding: 2px;
+}
+
+.loadButton {
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .modal-overlay {
@@ -105,10 +133,7 @@ footer {
   border-radius: 8px;
   position: relative;
   overflow-y: auto;
-  max-height: 500px;
-  display: flex;             
-  gap: 20px;               
-  align-items: flex-start;   
+  max-height: 600px;
 }
 
 .close-button {
@@ -128,15 +153,16 @@ footer {
 }
 
 .modal-details h2 {
-  margin-bottom: 10px;
+  margin-top: 0px;
+  margin-bottom: 15px;
 }
 
-.modal-overview {
-  margin-top: 10px;
+.modal-overview, .modal-release, .modal-runtime, .modal-genre {
+  margin-top: -10px;
 }
 
 .modalMoviePicture {
-  max-width: 30%;
+  max-width: 60%;
   height: auto;
   border-radius: 4px;
 }
@@ -146,10 +172,26 @@ footer {
   padding: 10px;
   font-size: 14px;
   border-radius:5px;
-  width: 200px;
+  max-width: 200px;
 }
 
 .playingButton {
   padding: 10px;
   border-radius: 5px;
+}
+
+.favoriteButton, .favoriteButton:hover, .watchedButton, .watchedButton:hover {
+  background: transparent;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.movie-card .heartNWatch {
+  display: flex;
+  gap: 10px; 
+  margin-top: 5px;
+}
+
+iframe {
+  margin-top: -10px;
 }
