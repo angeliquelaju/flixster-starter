@@ -4,7 +4,7 @@ Submitted by: Valerie Laju
 
 Estimated time spent: **#** hours spent in total
 
-Deployed Application (**required**): [Flixster Deployed Site](ADD_LINK_HERE)
+Deployed Application (**required**): [Flixster Deployed Site] https://flixster-starter-o8fh.onrender.com
 
 ### Application Features
 
