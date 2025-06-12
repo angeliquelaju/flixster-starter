@@ -59,7 +59,7 @@ Deployed Application (**required**): [Flixster Deployed Site] https://flixster-s
     - [x] Search bar
     - [x] Movie grid
     - [x] Footer section
-    - [ ] **VIDEO WALKTHROUGH SPECIAL INSTRUCTIONS**: To ease the grading process, please use the [color contrast checker](https://webaim.org/resources/contrastchecker/) to demonstrate to the grading team that text and background colors on your website have appropriate contrast. The Contrast Ratio should be above 4.5:1 and should have a green box surrounding it. 
+    - [x] **VIDEO WALKTHROUGH SPECIAL INSTRUCTIONS**: To ease the grading process, please use the [color contrast checker](https://webaim.org/resources/contrastchecker/) to demonstrate to the grading team that text and background colors on your website have appropriate contrast. The Contrast Ratio should be above 4.5:1 and should have a green box surrounding it. 
   - [x] **Deployment**
   - [x] Website is deployed via Render.
   - [x] **VIDEO WALKTHROUGH SPECIAL INSTRUCTIONS**: For ease of grading, please use the deployed version of your website when creating your walkthrough. 
@@ -104,10 +104,10 @@ https://www.loom.com/embed/8a4a11a036124b11a9058e6ccb024b78?sid=505d218a-d48b-46
 ### Reflection
 
 * Did the topics discussed in your labs prepare you to complete the assignment? Be specific, which features in your weekly assignment did you feel unprepared to complete?
-Yes, I think the topics discussed in lab was really help for this assignment because the content was directly applicable to the project, especially all the practice with APIs and pulling that information.
+Yes, I think the topics discussed in lab was really help for this assignment because the content was directly applicable to the project, especially all the practice with APIs and pulling that information.  
 
 * If you had more time, what would you have done differently? Would you have added additional features? Changed the way your project responded to a particular event, etc.
-I think if I had more time I would spend it more on organizing my code and think about maybe creating a new file for each component rather than putting it all on MovieList so that it is not confusing to read through. 
+I think if I had more time I would spend it more on organizing my code and think about maybe creating a new file for each component rather than putting it all on MovieList so that it is not confusing to read through.  
 
 * Reflect on your project demo, what went well? Were there things that maybe didn't go as planned? Did you notice something that your peer did that you would like to try next time?
 I think I was able to demonstrate the features of my web-app pretty well, but it did take several tries so I would try maybe having a list of things I need to show beforehand to have the whole process go smoother.
