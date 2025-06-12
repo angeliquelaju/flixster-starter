@@ -6,7 +6,9 @@ header {
 }
 
 footer {
-  background-color: rgb(251, 246, 217);
+  background-color: rgb(253, 239, 160);
+  margin-bottom: -15px;
+  padding: 1px;
 }
 
 .footer p {
