@@ -2,7 +2,7 @@
 
 Submitted by: Valerie Laju
 
-Estimated time spent: **#** hours spent in total
+Estimated time spent: **12** hours spent in total
 
 Deployed Application (**required**): [Flixster Deployed Site] https://flixster-starter-o8fh.onrender.com
 
@@ -107,16 +107,13 @@ Deployed Application (**required**): [Flixster Deployed Site] https://flixster-s
 ### Reflection
 
 * Did the topics discussed in your labs prepare you to complete the assignment? Be specific, which features in your weekly assignment did you feel unprepared to complete?
-
-Add your response here
+Yes, I think the topics discussed in lab was really help for this assignment because the content was directly applicable to the project, especially all the practice with APIs and pulling that information.
 
 * If you had more time, what would you have done differently? Would you have added additional features? Changed the way your project responded to a particular event, etc.
-  
-Add your response here
+I think if I had more time I would spend it more on organizing my code and think about maybe creating a new file for each component rather than putting it all on MovieList so that it is not confusing to read through. 
 
 * Reflect on your project demo, what went well? Were there things that maybe didn't go as planned? Did you notice something that your peer did that you would like to try next time?
-
-Add your response here
+I think I was able to demonstrate the features of my web-app pretty well, but it did take several tries so I would try maybe having a list of things I need to show beforehand to have the whole process go smoother.
 
 ### Open-source libraries used
 
