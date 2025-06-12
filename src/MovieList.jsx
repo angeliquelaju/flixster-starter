@@ -314,6 +314,14 @@ const MovieList = () => {
           </div>
         )}
 
+        {view === 'home' && hasMore && !loading && (
+          <div id="load">
+            <button className = "loadButton" onClick = {handleLoadMore}>
+              Load More
+            </button>
+          </div>
+        )}
+
         {view === 'search' && !loading && searchResults.length === 0 && (
           <p>No results found for "{searchQuery}".</p>
         )}
