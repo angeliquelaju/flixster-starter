@@ -22,7 +22,7 @@ footer {
 }
 
 .movie-card {
-  width: 200px;           
+  width: 180px;           
   padding: 8px; 
   background: transparent;
   border-radius: 10px;
@@ -64,6 +64,9 @@ footer {
 .searchNSort {
   background-color: #4e6e98;
   padding-bottom: 30px;
+  margin-right: -20px;
+  margin-left: -20px;
+  margin-top: -20px;
   display: flex;
   align-items: center;
   justify-content: space-between; 
@@ -194,4 +197,36 @@ footer {
 
 iframe {
   margin-top: -10px;
+}
+
+.app-layout {
+  display: flex;
+}
+
+.sidebar {
+  width: auto;
+  padding: 20px;
+  background-color: #1e1e1e;
+  color: white;
+  height: auto;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.sidebar li.active {
+  font-weight: bold;
+  color: #ffcc00;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
 }

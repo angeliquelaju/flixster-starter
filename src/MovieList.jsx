@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import MovieCard from './MovieCard.jsx';
 import MovieModal from './MovieModal.jsx';
+import Sidebar from './Sidebar.jsx';
 
 const MovieList = () => {
   const [view, setView] = useState('nowPlaying');
@@ -14,6 +15,7 @@ const MovieList = () => {
   const [sortOption, setSortOption] = useState('');
   const [favorites, setFavorites] = useState(new Set());
   const [watched, setWatched] = useState(new Set());
+  const [allMoviesMap, setAllMoviesMap] = useState(new Map());
 
   useEffect(() => {
     if (view === 'nowPlaying') {
@@ -44,7 +46,7 @@ const MovieList = () => {
       (video) =>
         video.site === "YouTube" && (video.type === "Trailer") && video.official === true
     );
-    
+
     let trailerKey = null;
     if (trailer) {
       trailerKey = trailer.key;
@@ -52,7 +54,11 @@ const MovieList = () => {
 
     const movieWithTrailer = {...data, trailerKey: trailerKey};
     setSelectedMovie(movieWithTrailer);
-    console.log(videosData.results);
+    setAllMoviesMap(prevMap => {
+      const newMap = new Map(prevMap);
+      newMap.set(movieWithTrailer.id, movieWithTrailer);
+      return newMap;
+    });
   };
 
   const fetchNowPlaying = async (pageNum) => {
@@ -69,6 +75,12 @@ const MovieList = () => {
           const newMovies = data.results.filter(
             movie => !prev.some(existing => existing.id === movie.id)
           );
+
+          setAllMoviesMap(prevMap => {
+            const newMap = new Map(prevMap);
+            newMovies.forEach(movie => newMap.set(movie.id, movie));
+            return newMap;
+          });
           return [...prev, ...newMovies];
         });
       }
@@ -79,6 +91,7 @@ const MovieList = () => {
     }
   };
 
+
   const searchMovies = async () => {
     setLoading(true);
     try {
@@ -87,6 +100,11 @@ const MovieList = () => {
       );
       const data = await res.json();
       setSearchResults(data.results);
+      setAllMoviesMap(prevMap => {
+        const newMap = new Map(prevMap);
+        data.results.forEach(movie => newMap.set(movie.id, movie));
+        return newMap;
+      });
     } catch (error) {
       console.error('Failed to search movies:', error);
     } finally {
@@ -102,7 +120,7 @@ const MovieList = () => {
 
   const handleViewChange = (newView) => {
     setView(newView);
-    if (newView === 'nowPlaying') {
+    if (newView === 'nowPlaying' || newView === 'home') {
       setMovies([]);
       setPage(1);
       setHasMore(true);
@@ -154,74 +172,159 @@ const MovieList = () => {
       return updated;
     });
   };
-
+  
   return (
-    <main>
-      <form className="searchNSort" onSubmit={(e) => {
-        e.preventDefault();
-        if (searchQuery !== '') {
-          setView('search');
-          searchMovies();
-        }
-      }}>
-        <div className="left">
-          <button className = "playingButton" onClick={() => handleViewChange('nowPlaying')} disabled={view === 'nowPlaying'}>Now Playing</button>
-        </div>
+    <main className = "app-layout">
+      <Sidebar currentView = {view} navigate = {(v) => setView(v)} />
 
-        <div className="center">
-          <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Search movies..." className = "searchBar"/>
-          <button type="submit" className="searchButton">Search</button>
-       
+      <div className = "main-content">
+        <form className = "searchNSort"
+          onSubmit = {(e) => {
+            e.preventDefault();
+            if (searchQuery !== '') {
+              searchMovies();
+              setView('search');
+            }
+          }}
+        >
+          <div className = "left">
+            <button type = "button"
+              className = "playingButton"
+              onClick = {() => handleViewChange('nowPlaying')}
+              disabled = {view === 'nowPlaying'}
+            >
+              Now Playing
+            </button>
+          </div>
 
-          <button type = "button" className = "clearButton" onClick={() => {
-            setSearchQuery('');   
-            setSearchResults([]);  
-            handleViewChange('nowPlaying'); 
-          }}>Clear
-          </button>
-         </div>
+          <div className = "center">
+            <input
+              type = "text"
+              value = {searchQuery}
+              onChange = {(e) => setSearchQuery(e.target.value)}
+              placeholder = "Search movies..."
+              className="searchBar"
+            />
+            <button type = "submit" className = "searchButton">Search</button>
+            <button
+              type = "button"
+              className = "clearButton"
+              onClick = {() => {
+                setSearchQuery('');
+                setSearchResults([]);
+                handleViewChange('nowPlaying');
+              }}
+            >
+              Clear
+            </button>
+          </div>
 
-        <div className="right">
-          <select value={sortOption} onChange={(e) => setSortOption(e.target.value)} className="sortDrop">
-            <option value="">Sort by...</option>
-            <option value="title">Title</option>
-            <option value="release_date">Release Date</option>
-            <option value="vote_average">Vote Average</option>
-          </select>
-        </div>
-      </form>
+          <div className = "right">
+            <select
+              value = {sortOption}
+              onChange = {(e) => setSortOption(e.target.value)}
+              className = "sortDrop"
+            >
+              <option value = "">Sort by...</option>
+              <option value = "title">Title</option>
+              <option value = "release_date">Release Date</option>
+              <option value = "vote_average">Vote Average</option>
+            </select>
+          </div>
+        </form>
 
-      <section className="movie-list">
-        {(view === 'nowPlaying' ? sortMovies(movies) : sortMovies(searchResults)).map(movie => (
-          <MovieCard
-            key={movie.id}
-            title={movie.title}
-            posterPath={movie.poster_path}
-            voteAverage={movie.vote_average}
-            onClick={() => handleMovieClick(movie.id)}
-            isFavorited={favorites.has(movie.id)}
-            toggleFavorite={() => toggleFavorite(movie.id)}
-            isWatched={watched.has(movie.id)}
-            toggleWatched={() => toggleWatched(movie.id)}
-          />
-        ))}
-      </section>
-      
-      <div id = "load">
+        <section className = "movie-list">
+          {view === 'favorites' && (
+            [...favorites].map(movieId => {
+              const movie = allMoviesMap.get(movieId);
+              return movie ? (
+                <MovieCard
+                  key = {movie.id}
+                  title = {movie.title}
+                  posterPath = {movie.poster_path}
+                  voteAverage = {movie.vote_average}
+                  onClick = {() => handleMovieClick(movie.id)}
+                  isFavorited = {favorites.has(movie.id)}
+                  toggleFavorite = {() => toggleFavorite(movie.id)}
+                  isWatched = {watched.has(movie.id)}
+                  toggleWatched = {() => toggleWatched(movie.id)}
+                />
+              ) : null;
+            })
+          )}
+
+          {view === 'watched' && (
+            [...watched].map(movieId => {
+              const movie = allMoviesMap.get(movieId);
+              return movie ? (
+                <MovieCard
+                  key = {movie.id}
+                  title = {movie.title}
+                  posterPath = {movie.poster_path}
+                  voteAverage = {movie.vote_average}
+                  onClick = {() => handleMovieClick(movie.id)}
+                  isFavorited = {favorites.has(movie.id)}
+                  toggleFavorite = {() => toggleFavorite(movie.id)}
+                  isWatched = {watched.has(movie.id)}
+                  toggleWatched = {() => toggleWatched(movie.id)}
+                />
+              ) : null;
+            })
+          )}
+
+          {(view === 'nowPlaying' || view === 'home') && (
+            sortMovies(movies).map((movie) => (
+              <MovieCard
+                key = {movie.id}
+                title = {movie.title}
+                posterPath = {movie.poster_path}
+                voteAverage = {movie.vote_average}
+                onClick = {() => handleMovieClick(movie.id)}
+                isFavorited = {favorites.has(movie.id)}
+                toggleFavorite = {() => toggleFavorite(movie.id)}
+                isWatched = {watched.has(movie.id)}
+                toggleWatched = {() => toggleWatched(movie.id)}
+              />
+            ))
+          )}
+
+          {view === 'search' && (
+            sortMovies(searchResults).map((movie) => (
+              <MovieCard
+                key = {movie.id}
+                title = {movie.title}
+                posterPath = {movie.poster_path}
+                voteAverage = {movie.vote_average}
+                onClick = {() => handleMovieClick(movie.id)}
+                isFavorited = {favorites.has(movie.id)}
+                toggleFavorite = {() => toggleFavorite(movie.id)}
+                isWatched = {watched.has(movie.id)}
+                toggleWatched = {() => toggleWatched(movie.id)}
+              />
+            ))
+          )}
+        </section>
+
+
         {view === 'nowPlaying' && hasMore && !loading && (
-        <button className = "loadButton" onClick={handleLoadMore}>Load More</button>
+          <div id="load">
+            <button className = "loadButton" onClick = {handleLoadMore}>
+              Load More
+            </button>
+          </div>
+        )}
+
+        {view === 'search' && !loading && searchResults.length === 0 && (
+          <p>No results found for "{searchQuery}".</p>
         )}
       </div>
 
-      {view === 'search' && !loading && searchResults.length === 0 && (
-        <p>No results found for "{searchQuery}".</p>
+      {selectedMovie && (
+        <MovieModal movie={selectedMovie} onClose = {() => setSelectedMovie(null)} />
       )}
-
-      {selectedMovie && (<MovieModal movie={selectedMovie} 
-      onClose={() => setSelectedMovie(null)} />)}
     </main>
+
   );
 };
 
 export default MovieList;
-
