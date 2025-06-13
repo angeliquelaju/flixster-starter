@@ -28,7 +28,8 @@ const MovieModal = ({ movie, onClose }) => {
             {movie.genres?.map((g) => g.name).join(", ")}
           </p>
           <p className="modal-overview">
-             <strong>Release Date:</strong> {movie.overview}</p>
+             <strong>Overview:</strong> {movie.overview}
+          </p>
         </div>
         {movie.trailerKey && (
           <div className="trailer-container">
