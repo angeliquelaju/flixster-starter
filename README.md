@@ -99,7 +99,7 @@ Deployed Application (**required**): [Flixster Deployed Site] https://flixster-s
   - [x] The Watched page displays all watched movies in a grid view.
 
 ### Walkthrough Video
-https://www.loom.com/share/460c4b71f64a43fe9a278a09567ebe97?sid=939d89f1-3b94-411f-b06e-dcb53bf62548
+https://www.loom.com/share/73ee082074e140ee9d4524103226f2da?sid=9a3f7078-f9c2-4e9d-8e53-bc6735325c66
 
 ### Reflection
 
