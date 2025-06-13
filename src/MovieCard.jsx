@@ -1,33 +1,48 @@
-import React from 'react';
+import React from "react";
 
-const MovieCard = ({ title, posterPath, voteAverage, onClick, isFavorited, toggleFavorite, isWatched, toggleWatched}) => {
-  const imageBaseUrl = 'https://image.tmdb.org/t/p/w500';
-  let favouriteButton = 'favoriteButton';
+const MovieCard = ({
+  title,
+  posterPath,
+  voteAverage,
+  onClick,
+  isFavorited,
+  toggleFavorite,
+  isWatched,
+  toggleWatched,
+}) => {
+  const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
+  let favouriteButton = "favoriteButton";
   if (isFavorited) {
-    favouriteButton += ' favorited';
+    favouriteButton += " favorited";
   }
-  let watchButton = 'watchedButton';
+  let watchButton = "watchedButton";
   if (isWatched) {
-    watchButton += ' watched';
+    watchButton += " watched";
   }
 
   return (
-    <article className="movie-card" onClick = {onClick}>
+    <article className="movie-card" onClick={onClick}>
       <img src={`${imageBaseUrl}${posterPath}`} alt={`${title} poster`} />
-      <h3 className = "movie-title">{title}</h3>
-      <p className = "rating">Rating: {voteAverage}</p>
-      <div className = "heartNWatch">
-        <button className = {favouriteButton} onClick={(e) => {
-          e.stopPropagation();  
-          toggleFavorite();
-        }}>
-          {isFavorited ? '❤️' : '🖤'}
+      <h3 className="movie-title">{title}</h3>
+      <p className="rating">Rating: {voteAverage}</p>
+      <div className="heartNWatch">
+        <button
+          className={favouriteButton}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleFavorite();
+          }}
+        >
+          {isFavorited ? "❤️" : "🖤"}
         </button>
-        <button className={watchButton} onClick={(e) => {
+        <button
+          className={watchButton}
+          onClick={(e) => {
             e.stopPropagation();
             toggleWatched();
-          }}>
-            {isWatched ? '✅' : '👁️'}
+          }}
+        >
+          {isWatched ? "✅" : "👁️"}
         </button>
       </div>
     </article>
